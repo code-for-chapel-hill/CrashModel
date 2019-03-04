@@ -46,18 +46,21 @@ function addPointsFromChapelHillAPI(url, icon, point_key, useClusterGroup) {
 }
 
 function renderMap() {
+  if (mymap) mymap.remove();
   mymap = L.map("mapid").setView([51.505, -0.09], 13);
   addOpenStreetMapData();
 
-  var trafficSignalIcon = getIconFromImageUrl(
-    "https://cdn4.iconfinder.com/data/icons/logistics-and-delivery-vol-3/64/traffic-light-256.png"
-  );
-  addPointsFromChapelHillAPI(
-    "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=traffic-signals-in-chapel-hill&rows=1000",
-    trafficSignalIcon,
-    "geo_point",
-    false
-  );
+  if (showTrafficSignals) {
+    var trafficSignalIcon = getIconFromImageUrl(
+      "https://cdn4.iconfinder.com/data/icons/logistics-and-delivery-vol-3/64/traffic-light-256.png"
+    );
+    addPointsFromChapelHillAPI(
+      "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=traffic-signals-in-chapel-hill&rows=1000",
+      trafficSignalIcon,
+      "geo_point",
+      false
+    );
+  }
 
   var bikeCrashIconImageUrl =
     "https://cartofy.com/wp-content/uploads/2016/10/map-marker-2-xxl.png";
@@ -66,5 +69,3 @@ function renderMap() {
   var crashIcon = getIconFromImageUrl(bikeCrashIconImageUrl);
   addPointsFromChapelHillAPI(bikeCrashAPIUrl, crashIcon, "geo_point_2d", true);
 }
-
-startApp();
