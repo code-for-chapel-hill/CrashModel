@@ -52,7 +52,7 @@ function renderMap() {
   var trafficSignalIcon = getIconFromImageUrl(
     "https://cdn4.iconfinder.com/data/icons/logistics-and-delivery-vol-3/64/traffic-light-256.png"
   );
-  var trafficSignalMarkers = addPointsFromChapelHillAPI(
+  addPointsFromChapelHillAPI(
     "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=traffic-signals-in-chapel-hill&rows=1000",
     trafficSignalIcon,
     "geo_point",
