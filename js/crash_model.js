@@ -47,7 +47,7 @@ function addPointsFromChapelHillAPI(url, icon, point_key, useClusterGroup) {
 
 function renderMap() {
   if (mymap) mymap.remove();
-  mymap = L.map("mapid").setView([51.505, -0.09], 13);
+  mymap = L.map("mapid").setView([35.9132, -79.0558], 13);
   addOpenStreetMapData();
 
   if (showTrafficSignals) {
