@@ -28,13 +28,12 @@ function addOpenStreetMapData() {
   ).addTo(mymap);
 }
 
-function addPointsFromChapelHillAPI(url, icon, useGeoPoint, useClusterGroup) {
+function addPointsFromChapelHillAPI(url, icon, point_key, useClusterGroup) {
   $.getJSON(url, function(result) {
     var markers = useClusterGroup ? L.markerClusterGroup() : [];
     var markersCopy = [];
     $.each(result.records, function(i, field) {
-      var record = result.records[i].fields;
-      var point = useGeoPoint ? record.geo_point : record.geo_point_2d;
+      var point = result.records[i].fields[point_key];
       var marker = L.marker(point, { icon: icon });
       if (!useClusterGroup) marker.addTo(mymap);
       if (useClusterGroup) markers.addLayer(marker);
@@ -56,7 +55,7 @@ function renderMap() {
   var trafficSignalMarkers = addPointsFromChapelHillAPI(
     "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=traffic-signals-in-chapel-hill&rows=1000",
     trafficSignalIcon,
-    true,
+    "geo_point",
     false
   );
 }
