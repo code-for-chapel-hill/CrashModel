@@ -2,6 +2,6 @@
 var mymap = null;
 
 // UI variables
-var showTrafficSignals = false;
-var showBikeCrashes = false;
+var showTrafficSignals = true;
+var showBikeCrashes = true;
 var showPedCrashes = false;
