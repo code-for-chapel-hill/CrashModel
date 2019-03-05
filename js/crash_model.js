@@ -1,6 +1,3 @@
-// GLOBAL VARIABLES
-var mymap = null;
-
 function startApp() {
   setTimeout(function() {
     $("#loader").fadeOut();
