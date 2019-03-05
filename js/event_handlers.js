@@ -3,4 +3,8 @@ $(document).ready(function() {
     showTrafficSignals = !showTrafficSignals;
     renderMap();
   });
+    $("#bikeCrashesToggle").change(function() {
+    showBikeCrashes = !showBikeCrashes;
+    renderMap();
+  });
 });

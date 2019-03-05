@@ -58,11 +58,12 @@ function renderMap() {
       false
     );
   }
-
-  var bikeCrashIconImageUrl =
+if (showBikeCrashes) {
+     var bikeCrashIconImageUrl =
     "https://cartofy.com/wp-content/uploads/2016/10/map-marker-2-xxl.png";
   var bikeCrashAPIUrl =
     "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=bicycle-crash-data-chapel-hill-region&rows=1000&facet=ambulancer&facet=bikeage_gr&facet=bike_age&facet=bike_alc_d&facet=bike_dir&facet=bike_injur&facet=bike_pos&facet=bike_race&facet=bike_sex&facet=city&facet=county&facet=crashalcoh&facet=crashday&facet=crash_grp&facet=crash_hour&facet=crash_loc&facet=crash_mont&facet=crash_time&facet=crash_type&facet=crash_year&facet=crsh_sevri&facet=developmen&facet=drvrage_gr&facet=drvr_age&facet=drvr_alc_d&facet=drvr_estsp&facet=drvr_injur&facet=drvr_race&facet=drvr_sex&facet=drvr_vehty&facet=excsspdind&facet=hit_run&facet=light_cond&facet=locality&facet=num_lanes&facet=num_units&facet=rd_charact&facet=rd_class&facet=rd_conditi&facet=rd_config&facet=rd_defects&facet=rd_feature&facet=rd_surface&facet=rural_urba&facet=speed_limi&facet=traff_cntr&facet=weather&facet=workzone_i&facet=bike_unitn&facet=drvr_unitn&facet=on_rd";
   var crashIcon = getIconFromImageUrl(bikeCrashIconImageUrl);
   addPointsFromChapelHillAPI(bikeCrashAPIUrl, crashIcon, "geo_point_2d", true);
+  }
 }
