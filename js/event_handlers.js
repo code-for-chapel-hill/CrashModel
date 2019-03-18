@@ -12,7 +12,7 @@ $(document).ready(function() {
     renderMap();
   });
   $("#redCirclesToggle").change(function() {
-    redCirclesToggle = !redCirclesToggle;
+    showRedCircles = !showRedCircles;
     renderMap();
   });
 });
