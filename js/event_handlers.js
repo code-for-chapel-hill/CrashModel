@@ -3,15 +3,16 @@ $(document).ready(function() {
     showTrafficSignals = !showTrafficSignals;
     renderMap();
   });
-    $("#bikeCrashesToggle").change(function() {
+  $("#bikeCrashesToggle").change(function() {
     showBikeCrashes = !showBikeCrashes;
     renderMap();
   });
-    $("#pedestrianCrashesToggle").change(function() {
+  $("#pedestrianCrashesToggle").change(function() {
     showPedCrashes = !showPedCrashes;
     renderMap();
   });
-
+  $("#redCirclesToggle").change(function() {
+    redCirclesToggle = !redCirclesToggle;
+    renderMap();
+  });
 });
-
-

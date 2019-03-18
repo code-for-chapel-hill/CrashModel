@@ -87,9 +87,8 @@
           >
             <h1 class="mt-5">Signal Danger</h1>
             <p>
-              The Signal Danger web app lets you visuallize the most dangerous
-              traffic signals based on the number of pedestrian crashes that
-              have occured (Data from Chapel Hill Open Data Portal).
+              The most dangerous traffic signals based on the number of
+              pedestrian and bike crashes.
             </p>
             <h3>Legend</h3>
             <table>
@@ -137,6 +136,21 @@
                   />
                 </td>
                 <td>Pedestrian Crash</td>
+              </tr>
+              <tr>
+                <td>
+                  <input
+                    type="checkbox"
+                    id="redCirclesToggle"
+                    checked="checked"
+                  />
+                  <img
+                    style="padding-right:10px"
+                    src="img/radius.png"
+                    width="30"
+                  />
+                </td>
+                <td>Num Crashes within 0.2m (raidus = num)</td>
               </tr>
             </table>
 

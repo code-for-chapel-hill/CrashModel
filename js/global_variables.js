@@ -5,3 +5,4 @@ var mymap = null;
 var showTrafficSignals = true;
 var showBikeCrashes = true;
 var showPedCrashes = true;
+var showRedCircles = true;
