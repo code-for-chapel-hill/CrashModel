@@ -1,17 +1,12 @@
-// function getEuclidianDistance(x1, y1, x2, y2) {
-//   var x = (x1 - x2) * (x1 - x2);
-//   var y = (y1 - y2) * (y1 - y2);
-//   return Math.sqrt(x + y);
-// }
 
-function getEuclideanDistance(lat1,long1, lat2, long2) {
-  var earthRadius = 6371e3;
+function getDistanceInMiles(lat1, long1, lat2, long2) {
+  var earthRadius = 6371;
 
-  var lat1Rads = lat1.toRadians();
-  var lat2Rads = lat2.toRadians();
+  var lat1Rads = toRadians(lat1);
+  var lat2Rads = toRadians(lat2);
 
-  var latDiff = (lat2 - lat1).toRadians();
-  var longDiff = (long2 - long1).toRadians();
+  var latDiff = toRadians(lat2 - lat1);
+  var longDiff = toRadians(long2 - long1);
 
   var a = Math.sin(latDiff/2) * Math.sin(latDiff/2) +
           Math.cos(lat1Rads) * Math.cos(lat2Rads) *
@@ -19,13 +14,12 @@ function getEuclideanDistance(lat1,long1, lat2, long2) {
 
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   var d = earthRadius * c;
+  return d;
 }
 
-// function getEuclideanDistanceInMiles(lat1, long1, lat2, long2) {
-//   var dist = getEuclideanDistance(lat1, long1, lat2, long2);
-//   var conversionConstant = 58.8968245849;
-//   return conversionConstant * dist;
-// }
+function toRadians(value) {
+  return value * Math.PI / 180;
+}
 
 /*
 Example Usage for chapel hill, durham and charlotte
@@ -43,7 +37,7 @@ function getCrashesWithinMilesOfTrafficSignal(
 ) {
   var numPointsWithin = 0;
   for (var i = 0; i < crashPoints.length; i++) {
-    var distInMiles = getEuclideanDistance(
+    var distInMiles = getDistanceInMiles(
       trafficSignalPoint[0],
       trafficSignalPoint[1],
       crashPoints[i][0],
@@ -53,15 +47,3 @@ function getCrashesWithinMilesOfTrafficSignal(
   }
   return numPointsWithin;
 }
-
-
-// when hovered over a specific signal, then display the
-// number of crashes using the getCrashesWithinMilesOfTrafficSignal
-// method, use mouseover
-function hoverOverSignal (signal) {
-  signal.display(getCrashesWithinMilesOfTrafficSignal);
-}
-
-function mouseOver()
-
-console.log("hello");
