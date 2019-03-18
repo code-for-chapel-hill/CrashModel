@@ -1,5 +1,5 @@
 
-function getDistanceInMiles(lat1, long1, lat2, long2) {
+function getDistanceInKM(lat1, long1, lat2, long2) {
   var earthRadius = 6371;
 
   var lat1Rads = toRadians(lat1);
@@ -37,7 +37,7 @@ function getCrashesWithinMilesOfTrafficSignal(
 ) {
   var numPointsWithin = 0;
   for (var i = 0; i < crashPoints.length; i++) {
-    var distInMiles = getDistanceInMiles(
+    var distInMiles = getDistanceInKM(
       trafficSignalPoint[0],
       trafficSignalPoint[1],
       crashPoints[i][0],
