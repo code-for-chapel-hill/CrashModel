@@ -1,3 +1,6 @@
+html, body {
+    height: 100%;
+}
 #mapid {
   float: fixed;
   width: 80%;
@@ -22,7 +25,10 @@ td {
 .card {
   position: relative;
   float: right;
-  height: 800px;
+  height: 100%;
+  margin: 0px;
+  background: rgba(255, 255, 255, 1);
+
 }
 
 .card-body {
