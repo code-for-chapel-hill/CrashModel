@@ -1,4 +1,3 @@
-
 function getDistanceInKM(lat1, long1, lat2, long2) {
   var earthRadius = 6371;
 
@@ -8,9 +7,12 @@ function getDistanceInKM(lat1, long1, lat2, long2) {
   var latDiff = toRadians(lat2 - lat1);
   var longDiff = toRadians(long2 - long1);
 
-  var a = Math.sin(latDiff/2) * Math.sin(latDiff/2) +
-          Math.cos(lat1Rads) * Math.cos(lat2Rads) *
-          Math.sin(longDiff/2) * Math.sin(longDiff/2);
+  var a =
+    Math.sin(latDiff / 2) * Math.sin(latDiff / 2) +
+    Math.cos(lat1Rads) *
+      Math.cos(lat2Rads) *
+      Math.sin(longDiff / 2) *
+      Math.sin(longDiff / 2);
 
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   var d = earthRadius * c;
@@ -18,7 +20,25 @@ function getDistanceInKM(lat1, long1, lat2, long2) {
 }
 
 function toRadians(value) {
-  return value * Math.PI / 180;
+  return (value * Math.PI) / 180;
+}
+
+function getRoadNameFromLatLong(lat, long) {
+  url =
+    "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=" +
+    lat +
+    "&lon=" +
+    long;
+  roadName = "Can't find road name";
+  $.ajax({
+    url: url,
+    dataType: "json",
+    async: false,
+    success: function(data) {
+      roadName = data.address.road;
+    }
+  });
+  return roadName;
 }
 
 /*
