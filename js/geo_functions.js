@@ -47,3 +47,4 @@ function getCrashesWithinMilesOfTrafficSignal(
   }
   return numPointsWithin;
 }
+
