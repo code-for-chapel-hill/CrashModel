@@ -1,20 +1,30 @@
 #mapid {
-  float: left;
-  width: 100%;
+  float: fixed;
+  width: 80%;
   height: 100%;
   top: 0px;
   left: 0px;
 }
 
 #loader {
-  position: fixed;
+  position: relative;
   width: 100%;
   height: 100%;
   background: rgba(1, 1, 1, 0.5);
   text-align: center;
   color: white;
-  padding-top: 100px;
+  padding-top: 0px;
 }
 td {
   padding: 10px 0px;
+}
+
+.card {
+  position: relative;
+  float: right;
+  height: 800px;
+}
+
+.card-body {
+  list-style-type: none;
 }
