@@ -25,34 +25,59 @@ function addOpenStreetMapData() {
   ).addTo(mymap);
 }
 
-function addPointsFromChapelHillAPI(url, icon, point_key, useClusterGroup) {
+function addPointsFromChapelHillAPI(
+  url,
+  icon,
+  point_key,
+  useClusterGroup,
+  trafficSignalUrl
+) {
   $.getJSON(url, function(result) {
     var markers = useClusterGroup ? L.markerClusterGroup() : [];
     var markersCopy = [];
-    $.each(result.records, function(i, field) {
-      var point = result.records[i].fields[point_key];
+    for (var i = 0; i < result.records.length; i++) {
+      if (typeof result.records[i].geometry == "undefined") {
+        continue;
+      }
+      if (trafficSignalUrl) {
+        var point = result.records[i].geometry.coordinates;
+        var temp = point.slice();
+        point[0] = temp[1];
+        point[1] = temp[0];
+        console.log(temp);
+      } else var point = result.records[i].fields[point_key];
       var marker = L.marker(point, { icon: icon });
       if (!useClusterGroup) marker.addTo(mymap);
       if (useClusterGroup) markers.addLayer(marker);
       markersCopy.push(marker);
-    });
+    }
     if (useClusterGroup) mymap.addLayer(markers);
     var group = new L.featureGroup(markersCopy);
     // mymap.fitBounds(group.getBounds());
   });
 }
 
-function getPointsNonAsync(url, point_key) {
+function getPointsNonAsync(url, point_key, trafficSignalUrl) {
   points = [];
   $.ajax({
     url: url,
     dataType: "json",
     async: false,
     success: function(result) {
-      $.each(result.records, function(i, field) {
-        var point = result.records[i].fields[point_key];
+      for (var i = 0; i < result.records.length; i++) {
+        if (typeof result.records[i].geometry == "undefined") {
+          continue;
+        }
+        if (trafficSignalUrl) {
+          var point = result.records[i].geometry.coordinates;
+          var temp = point.slice();
+          point[0] = temp[1];
+          point[1] = temp[0];
+        } else {
+          var point = result.records[i].fields[point_key];
+        }
         points.push(point);
-      });
+      }
     }
   });
   return points;
@@ -99,9 +124,9 @@ function getSortedTrafficSignalScores(
   urlPedCrashes,
   urlBikeCrashes
 ) {
-  trafficSignalPoints = getPointsNonAsync(urlTrafficSignals, "geo_point");
-  pedCrashPoints = getPointsNonAsync(urlPedCrashes, "geo_point_2d");
-  bikeCrashPoints = getPointsNonAsync(urlBikeCrashes, "geo_point_2d");
+  trafficSignalPoints = getPointsNonAsync(urlTrafficSignals, "geo_point", true);
+  pedCrashPoints = getPointsNonAsync(urlPedCrashes, "geo_point_2d", false);
+  bikeCrashPoints = getPointsNonAsync(urlBikeCrashes, "geo_point_2d", false);
   trafficSignalScores = getTrafficSignalScores(
     trafficSignalPoints,
     pedCrashPoints,
@@ -140,18 +165,19 @@ function renderMap() {
   if (showTrafficSignals) {
     var trafficSignalIcon = getIconFromImageUrl("img/traffic-light-256.png");
     addPointsFromChapelHillAPI(
-      "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=traffic-signals-in-chapel-hill&rows=1000",
+      "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=traffic-signal-location-list%rows=1000",
       trafficSignalIcon,
       "geo_point",
-      false
+      false,
+      true
     );
   }
 
   if (showRedCircles) {
     trafficSignalScores = getSortedTrafficSignalScores(
-      "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=traffic-signals-in-chapel-hill&rows=1000",
-      "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=bicycle-crash-data-chapel-hill-region&rows=1000&facet=ambulancer&facet=bikeage_gr&facet=bike_age&facet=bike_alc_d&facet=bike_dir&facet=bike_injur&facet=bike_pos&facet=bike_race&facet=bike_sex&facet=city&facet=county&facet=crashalcoh&facet=crashday&facet=crash_grp&facet=crash_hour&facet=crash_loc&facet=crash_mont&facet=crash_time&facet=crash_type&facet=crash_year&facet=crsh_sevri&facet=developmen&facet=drvrage_gr&facet=drvr_age&facet=drvr_alc_d&facet=drvr_estsp&facet=drvr_injur&facet=drvr_race&facet=drvr_sex&facet=drvr_vehty&facet=excsspdind&facet=hit_run&facet=light_cond&facet=locality&facet=num_lanes&facet=num_units&facet=rd_charact&facet=rd_class&facet=rd_conditi&facet=rd_config&facet=rd_defects&facet=rd_feature&facet=rd_surface&facet=rural_urba&facet=speed_limi&facet=traff_cntr&facet=weather&facet=workzone_i&facet=bike_unitn&facet=drvr_unitn&facet=on_rd",
-      "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=pedestrian-crashes-chapel-hill-region&rows=1000&facet=ambulancer&facet=city&facet=county&facet=crashalcoh&facet=crashday&facet=crash_grp&facet=crash_loc&facet=crash_type&facet=crsh_sevri&facet=developmen&facet=drvrage_gr"
+      "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=traffic-signal-location-list&rows=1000",
+      "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=bicycle-crash-data-chapel-hill-region&rows=1000",
+      "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=pedestrian-crashes-chapel-hill-region&rows=1000"
     );
     addTrafficSignalCircles(trafficSignalScores, trafficSignalScores.length);
   }
@@ -159,21 +185,28 @@ function renderMap() {
   if (showBikeCrashes) {
     var bikeCrashIconImageUrl = "img/map-marker-2-xxl.png";
     var bikeCrashAPIUrl =
-      "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=bicycle-crash-data-chapel-hill-region&rows=1000&facet=ambulancer&facet=bikeage_gr&facet=bike_age&facet=bike_alc_d&facet=bike_dir&facet=bike_injur&facet=bike_pos&facet=bike_race&facet=bike_sex&facet=city&facet=county&facet=crashalcoh&facet=crashday&facet=crash_grp&facet=crash_hour&facet=crash_loc&facet=crash_mont&facet=crash_time&facet=crash_type&facet=crash_year&facet=crsh_sevri&facet=developmen&facet=drvrage_gr&facet=drvr_age&facet=drvr_alc_d&facet=drvr_estsp&facet=drvr_injur&facet=drvr_race&facet=drvr_sex&facet=drvr_vehty&facet=excsspdind&facet=hit_run&facet=light_cond&facet=locality&facet=num_lanes&facet=num_units&facet=rd_charact&facet=rd_class&facet=rd_conditi&facet=rd_config&facet=rd_defects&facet=rd_feature&facet=rd_surface&facet=rural_urba&facet=speed_limi&facet=traff_cntr&facet=weather&facet=workzone_i&facet=bike_unitn&facet=drvr_unitn&facet=on_rd";
+      "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=bicycle-crash-data-chapel-hill-region&rows=1000";
     var crashIcon = getIconFromImageUrl(bikeCrashIconImageUrl);
     addPointsFromChapelHillAPI(
       bikeCrashAPIUrl,
       crashIcon,
       "geo_point_2d",
-      true
+      true,
+      false
     );
   }
 
   if (showPedCrashes) {
     var pedCrashIconImageUrl = "img/map-marker-2-xxl 2.png";
     var pedCrashAPIUrl =
-      "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=pedestrian-crashes-chapel-hill-region&rows=1000&facet=ambulancer&facet=city&facet=county&facet=crashalcoh&facet=crashday&facet=crash_grp&facet=crash_loc&facet=crash_type&facet=crsh_sevri&facet=developmen&facet=drvrage_gr";
+      "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=pedestrian-crashes-chapel-hill-region&rows=1000";
     var crashIcon = getIconFromImageUrl(pedCrashIconImageUrl);
-    addPointsFromChapelHillAPI(pedCrashAPIUrl, crashIcon, "geo_point_2d", true);
+    addPointsFromChapelHillAPI(
+      pedCrashAPIUrl,
+      crashIcon,
+      "geo_point_2d",
+      true,
+      false
+    );
   }
 }
