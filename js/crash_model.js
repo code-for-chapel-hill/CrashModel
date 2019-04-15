@@ -44,7 +44,6 @@ function addPointsFromChapelHillAPI(
         var temp = point.slice();
         point[0] = temp[1];
         point[1] = temp[0];
-        console.log(temp);
       } else var point = result.records[i].fields[point_key];
       var marker = L.marker(point, { icon: icon });
       if (!useClusterGroup) marker.addTo(mymap);
@@ -165,7 +164,7 @@ function renderMap() {
   if (showTrafficSignals) {
     var trafficSignalIcon = getIconFromImageUrl("img/traffic-light-256.png");
     addPointsFromChapelHillAPI(
-      "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=traffic-signal-location-list%rows=1000",
+      "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=traffic-signal-location-list&rows=1000",
       trafficSignalIcon,
       "geo_point",
       false,
@@ -175,11 +174,7 @@ function renderMap() {
 
   if (showRedCircles) {
     trafficSignalScores = getSortedTrafficSignalScores(
-<<<<<<< HEAD
       "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=traffic-signal-location-list&rows=1000",
-=======
-      "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=traffic-signals-in-chapel-hill&rows=1000",
->>>>>>> ecb0678806c24d12376b5882a0d6af441b27d1c4
       "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=bicycle-crash-data-chapel-hill-region&rows=1000",
       "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=pedestrian-crashes-chapel-hill-region&rows=1000"
     );
