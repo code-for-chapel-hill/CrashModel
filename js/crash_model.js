@@ -175,7 +175,11 @@ function renderMap() {
 
   if (showRedCircles) {
     trafficSignalScores = getSortedTrafficSignalScores(
+<<<<<<< HEAD
       "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=traffic-signal-location-list&rows=1000",
+=======
+      "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=traffic-signals-in-chapel-hill&rows=1000",
+>>>>>>> ecb0678806c24d12376b5882a0d6af441b27d1c4
       "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=bicycle-crash-data-chapel-hill-region&rows=1000",
       "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=pedestrian-crashes-chapel-hill-region&rows=1000"
     );
