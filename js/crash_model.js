@@ -68,6 +68,7 @@ function getPointsNonAsync(url, point_key, trafficSignalUrl) {
           continue;
         }
         if (trafficSignalUrl) {
+          console.log(result.records[i]);
           var point = result.records[i].geometry.coordinates;
           var temp = point.slice();
           point[0] = temp[1];
@@ -172,12 +173,23 @@ function renderMap() {
     );
   }
 
-  if (showRedCircles) {
-    trafficSignalScores = getSortedTrafficSignalScores(
-      "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=traffic-signal-location-list&rows=1000",
-      "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=bicycle-crash-data-chapel-hill-region&rows=1000",
-      "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=pedestrian-crashes-chapel-hill-region&rows=1000"
+  trafficSignalScores = getSortedTrafficSignalScores(
+    "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=traffic-signal-location-list&rows=1000",
+    "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=bicycle-crash-data-chapel-hill-region&rows=1000",
+    "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=pedestrian-crashes-chapel-hill-region&rows=1000"
+  );
+  for (var i = 0; i < 10; i++) {
+    var coords = trafficSignalScores[i];
+    var roadName = getRoadNameFromLatLong(coords[0][0], coords[0][1]);
+    $("#traffic_locations").append(
+      '<li><a href="#" class="card-link">' +
+        (i + 1) +
+        ": " +
+        roadName +
+        "</a></li>"
     );
+  }
+  if (showRedCircles) {
     addTrafficSignalCircles(trafficSignalScores, trafficSignalScores.length);
   }
 

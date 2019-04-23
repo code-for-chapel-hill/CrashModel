@@ -15,4 +15,7 @@ $(document).ready(function() {
     showRedCircles = !showRedCircles;
     renderMap();
   });
+$("#locations").on("click", function() {
+$("#sidebar").fadeToggle();
+ });
 });
