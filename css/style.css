@@ -33,19 +33,31 @@ td {
 }
 .card a {
   text-decoration: none;
-  font-size: 20px;
+  font-size: 15px;
   color: black;
   display: block;
     text-align: left; 
   transition: 0.3s;
 }
-.card a {
+
+.card-link-sidebar {
   text-decoration: none;
-  font-size: 20px;
+  font-size: 15px;
   color: black;
-  display: block;
+  display: block; 
     text-align: left; 
   transition: 0.3s;
+}
+
+.card-link-sidebar a { 
+    text-decoration: underline;
+    padding-bottom: 13px;
+}
+
+.card-link-sidebar strong { 
+    text-decoration: none;
+    float: left;
+    padding-right: 10px;
 }
 
 

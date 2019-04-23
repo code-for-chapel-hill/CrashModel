@@ -49,6 +49,7 @@ function addPointsFromChapelHillAPI(
       if (!useClusterGroup) marker.addTo(mymap);
       if (useClusterGroup) markers.addLayer(marker);
       markersCopy.push(marker);
+
     }
     if (useClusterGroup) mymap.addLayer(markers);
     var group = new L.featureGroup(markersCopy);
@@ -178,13 +179,14 @@ function renderMap() {
     "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=bicycle-crash-data-chapel-hill-region&rows=1000",
     "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=pedestrian-crashes-chapel-hill-region&rows=1000"
   );
+    
   for (var i = 0; i < 10; i++) {
     var coords = trafficSignalScores[i];
     var roadName = getRoadNameFromLatLong(coords[0][0], coords[0][1]);
     $("#traffic_locations").append(
-      '<li><a href="#" class="card-link">' +
+      '<li class="card-link-sidebar"><strong>' +
         (i + 1) +
-        ": " +
+        ':</strong> <a href="#" class="card-link-sidebar">' +
         roadName +
         "</a></li>"
     );
@@ -221,3 +223,16 @@ function renderMap() {
     );
   }
 }
+
+// Popup
+var popup = L.popup();
+
+function onMapClick(e) {
+    popup
+        .setLatLng(e.latlng)
+        .setContent("You clicked the map at " + e.latlng.toString())
+        .openOn(mymap);
+}
+/* Also needs 
+mymap.on('click', onMapClick);
+*/
