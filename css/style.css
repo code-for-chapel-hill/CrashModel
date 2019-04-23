@@ -39,6 +39,15 @@ td {
     text-align: left; 
   transition: 0.3s;
 }
+.card a {
+  text-decoration: none;
+  font-size: 20px;
+  color: black;
+  display: block;
+    text-align: left; 
+  transition: 0.3s;
+}
+
 
 
 .card-body {
