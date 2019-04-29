@@ -49,7 +49,6 @@ function addPointsFromChapelHillAPI(
       if (!useClusterGroup) marker.addTo(mymap);
       if (useClusterGroup) markers.addLayer(marker);
       markersCopy.push(marker);
-
     }
     if (useClusterGroup) mymap.addLayer(markers);
     var group = new L.featureGroup(markersCopy);
@@ -69,7 +68,6 @@ function getPointsNonAsync(url, point_key, trafficSignalUrl) {
           continue;
         }
         if (trafficSignalUrl) {
-          console.log(result.records[i]);
           var point = result.records[i].geometry.coordinates;
           var temp = point.slice();
           point[0] = temp[1];
@@ -107,8 +105,8 @@ function getTrafficSignalScores(
 }
 
 function trafficSignalComparisionFunction(entry1, entry2) {
-  var score1 = entry1[0];
-  var score2 = entry2[0];
+  var score1 = entry1[1];
+  var score2 = entry2[1];
   return score2 - score1;
 }
 
@@ -118,6 +116,10 @@ function zip(arr1, arr2) {
     newArr.push([arr1[i], arr2[i]]);
   }
   return newArr;
+}
+
+function zoomToLatLong(lat, long) {
+  mymap.setView([lat, long], 18);
 }
 
 function getSortedTrafficSignalScores(
@@ -150,7 +152,7 @@ function addTrafficSignalCircles(trafficSignalPointsAndScores, numToDisplay) {
       color: "red",
       fillColor: "#f03",
       fillOpacity: 0.5,
-      radius: score * 30
+      radius: score * 10
     }).addTo(mymap);
     markers.push(marker);
   }
@@ -179,17 +181,26 @@ function renderMap() {
     "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=bicycle-crash-data-chapel-hill-region&rows=1000",
     "https://www.chapelhillopendata.org/api/records/1.0/search/?dataset=pedestrian-crashes-chapel-hill-region&rows=1000"
   );
-    
-  for (var i = 0; i < 10; i++) {
-    var coords = trafficSignalScores[i];
-    var roadName = getRoadNameFromLatLong(coords[0][0], coords[0][1]);
-    $("#traffic_locations").append(
-      '<li class="card-link-sidebar"><strong>' +
-        (i + 1) +
-        ':</strong> <a href="#" class="card-link-sidebar">' +
-        roadName +
-        "</a></li>"
-    );
+
+  if (!trafficLocationsAdded) {
+    for (var i = 0; i < trafficSignalScores.length; i++) {
+      var coords = trafficSignalScores[i];
+      var roadName = getRoadNameFromLatLong(coords[0][0], coords[0][1]);
+      var lat = coords[0][0];
+      var long = coords[0][1];
+      $("#traffic_locations").append(
+        '<li class="card-link-sidebar"><strong>' +
+          (i + 1) +
+          ':</strong> <a href="#" onclick="zoomToLatLong(' +
+          lat +
+          "," +
+          long +
+          ');" class="card-link-sidebar">' +
+          roadName +
+          "</a></li>"
+      );
+    }
+    trafficLocationsAdded = true;
   }
   if (showRedCircles) {
     addTrafficSignalCircles(trafficSignalScores, trafficSignalScores.length);
@@ -228,11 +239,11 @@ function renderMap() {
 var popup = L.popup();
 
 function onMapClick(e) {
-    popup
-        .setLatLng(e.latlng)
-        .setContent("You clicked the map at " + e.latlng.toString())
-        .openOn(mymap);
+  popup
+    .setLatLng(e.latlng)
+    .setContent("You clicked the map at " + e.latlng.toString())
+    .openOn(mymap);
 }
-/* Also needs 
+/* Also needs
 mymap.on('click', onMapClick);
 */
