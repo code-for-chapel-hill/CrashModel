@@ -23,24 +23,6 @@ function toRadians(value) {
   return (value * Math.PI) / 180;
 }
 
-function getRoadNameFromLatLong(lat, long) {
-  url =
-    "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=" +
-    lat +
-    "&lon=" +
-    long;
-  roadName = "Can't find road name";
-  $.ajax({
-    url: url,
-    dataType: "json",
-    async: false,
-    success: function(data) {
-      roadName = data.address.road;
-    }
-  });
-  return roadName;
-}
-
 /*
 Example Usage for chapel hill, durham and charlotte
 getCrashesWithinMilesOfTrafficSignal(
@@ -67,4 +49,3 @@ function getCrashesWithinMilesOfTrafficSignal(
   }
   return numPointsWithin;
 }
-

@@ -8,7 +8,6 @@ body {
   height: 100%;
   top: 0px;
   left: 0px;
-   
 }
 
 #loader {
@@ -36,7 +35,7 @@ td {
   font-size: 15px;
   color: black;
   display: block;
-    text-align: left; 
+  text-align: left;
   transition: 0.3s;
 }
 
@@ -44,23 +43,21 @@ td {
   text-decoration: none;
   font-size: 15px;
   color: black;
-  display: block; 
-    text-align: left; 
+  display: block;
+  text-align: left;
   transition: 0.3s;
 }
 
-.card-link-sidebar a { 
-    text-decoration: underline;
-    padding-bottom: 13px;
+.card-link-sidebar a {
+  text-decoration: underline;
+  padding-bottom: 13px;
 }
 
-.card-link-sidebar strong { 
-    text-decoration: none;
-    float: left;
-    padding-right: 10px;
+.card-link-sidebar strong {
+  text-decoration: none;
+  float: left;
+  padding-right: 10px;
 }
-
-
 
 .card-body {
   list-style-type: none;
@@ -68,4 +65,5 @@ td {
 
 #traffic_locations {
   font-size: 0.8em;
+  background: white;
 }
