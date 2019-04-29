@@ -120,6 +120,7 @@ function zip(arr1, arr2, arr3) {
 
 function zoomToLatLong(lat, long) {
   mymap.setView([lat, long], 18);
+  return false;
 }
 
 function getTrafficSignalStreetNames(url) {
@@ -225,7 +226,7 @@ function renderMap() {
           lat +
           "," +
           long +
-          ');" class="card-link-sidebar">' +
+          ');return false;" class="card-link-sidebar">' +
           roadName +
           "</a></li>"
       );
